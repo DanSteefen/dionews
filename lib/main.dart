@@ -4,23 +4,25 @@ import 'package:dionews/service/api_service.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  ApiService client = ApiService();
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("News App", style: TextStyle(color: Colors.black)),
-        backgroundColor: Colors.white,
-      ),
-      body: FutureBuilder(
+    ApiService client = ApiService();
+
+    return MaterialApp( // Add MaterialApp as the root widget
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text("News App", style: TextStyle(color: Colors.black)),
+          backgroundColor: Colors.white,
+        ),
+        body: FutureBuilder(
           future: client.getArticle(),
-          builder:
-              (BuildContext context, AsyncSnapshot<List<Article>> snapshot) {
+          builder: (BuildContext context, AsyncSnapshot<List<Article>> snapshot) {
             if (snapshot.hasData) {
               List<Article>? articles = snapshot.data;
 
@@ -33,7 +35,9 @@ class MyApp extends StatelessWidget {
             return Center(
               child: CircularProgressIndicator(),
             );
-          }),
+          },
+        ),
+      ),
     );
   }
 }
